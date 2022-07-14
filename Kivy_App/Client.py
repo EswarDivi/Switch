@@ -176,8 +176,8 @@ class ChatPage(GridLayout):
         Window.bind(on_key_down=self.on_key_down)
 
         Clock.schedule_once(self.focus_text_input, 1)
-        socket_client.connect(obj.ip.text, int(obj.port.text) - 1, username, show_error)
-        socket_client.start_listening(self.incoming_message, show_error)
+        Chat_Client.connect(obj.ip.text, int(obj.port.text) - 1, username, show_error)
+        Chat_Client.start_listening(self.incoming_message, show_error)
 
     def update(self, dt):
         packet, _ = self.client_socket.recvfrom(self.BUFF_SIZE)
@@ -199,7 +199,7 @@ class ChatPage(GridLayout):
             self.history.update_chat_history(
                 f"[color=dd2020]{chat_app.connect_page.username.text}[/color] > {message}"
             )
-            socket_client.send(message)
+            Chat_Client.send(message)
 
         # As mentioned above, we have to shedule for refocusing to input field
         Clock.schedule_once(self.focus_text_input, 0.1)
