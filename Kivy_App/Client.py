@@ -20,7 +20,7 @@ import numpy as np
 import time
 import base64
 from re import L
-import socket_client
+import Chat_Client
 import sys
 
 # Login Page
