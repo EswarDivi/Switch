@@ -219,7 +219,7 @@ class ChatPage(GridLayout):
         )
 
 
-class Epic(App):
+class Switch(App):
     def build(self):
         # Adding Screen Manager to Handle Multiple Displays
         self.screen_manager = ScreenManager()
@@ -251,5 +251,5 @@ def show_error(message):
 
 
 if __name__ == "__main__":
-    chat_app = Epic()
+    chat_app = Switch()
     chat_app.run()
