@@ -226,7 +226,7 @@ class Epic(App):
         screen = Screen(name="Connect")
         screen.add_widget(self.connect_page)
         self.screen_manager.add_widget(screen)
-
+ 
         # Info Page
         self.info_page = InfoPage()
         screen = Screen(name="Info")
