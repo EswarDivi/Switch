@@ -13,6 +13,8 @@ from kivy.core.window import Window
 from kivy.graphics.texture import Texture
 from kivy.uix.scrollview import ScrollView
 from kivy.clock import Clock
+
+# from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 import time
 import os
 import cv2, imutils, socket
@@ -22,6 +24,7 @@ import base64
 from re import L
 import Chat_Client
 import sys
+import Audio_client
 
 # Login Page
 class ConnectPage(GridLayout):
@@ -156,7 +159,6 @@ class ChatPage(GridLayout):
 
         self.client_socket.sendto(username_, (self.host_ip, int(self.port)))
         self.add_widget(self.img1)
-        self.capture = cv2.VideoCapture(0)
         Clock.schedule_interval(self.update, 1.0 / 33.0)
 
         self.history = ScrollableLabel(height=Window.size[1] * 0.9, size_hint_y=None)
@@ -178,6 +180,7 @@ class ChatPage(GridLayout):
         Clock.schedule_once(self.focus_text_input, 1)
         Chat_Client.connect(obj.ip.text, int(obj.port.text) - 1, username, show_error)
         Chat_Client.start_listening(self.incoming_message, show_error)
+        Audio_client.start_listening(obj.ip.text, int(obj.port.text) - 2)
 
     def update(self, dt):
         packet, _ = self.client_socket.recvfrom(self.BUFF_SIZE)
@@ -200,8 +203,6 @@ class ChatPage(GridLayout):
                 f"[color=dd2020]{chat_app.connect_page.username.text}[/color] > {message}"
             )
             Chat_Client.send(message)
-
-        # As mentioned above, we have to shedule for refocusing to input field
         Clock.schedule_once(self.focus_text_input, 0.1)
 
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):

@@ -2,8 +2,8 @@ import socket
 import select
 
 HEADER_LENGTH = 10
-
-IP = "127.0.0.1"
+host_name = socket.gethostname()
+IP = socket.gethostbyname(host_name)
 PORT = 9998
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -12,6 +12,8 @@ server_socket.listen()
 sockets_list = [server_socket]
 clients = {}
 print(f"Listening for connections on {IP}:{PORT}...")
+
+
 def receive_message(client_socket):
     try:
         message_header = client_socket.recv(HEADER_LENGTH)
@@ -21,6 +23,7 @@ def receive_message(client_socket):
         return {"header": message_header, "data": client_socket.recv(message_length)}
     except Exception:
         return False
+
 
 while True:
 
@@ -41,7 +44,9 @@ while True:
         else:
             message = receive_message(notified_socket)
             if message is False:
-                print(f'Closed connection from: {clients[notified_socket]["data"].decode("utf-8")}')
+                print(
+                    f'Closed connection from: {clients[notified_socket]["data"].decode("utf-8")}'
+                )
                 sockets_list.remove(notified_socket)
                 del clients[notified_socket]
                 continue
