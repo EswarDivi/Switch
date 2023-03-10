@@ -1,3 +1,4 @@
 pyshine==0.0.6
 opencv-python
 imutils
+kivy[base]
